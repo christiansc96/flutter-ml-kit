@@ -70,6 +70,39 @@ class HomeController {
       ).showSnackBar(const SnackBar(content: Text('NO ES UN DNI')));
       return;
     }
+
+    Map<String, String> extractedData = {};
+    final data = recognized.text.split('\n');
+
+    for (var i = 0; i < data.length; i++) {
+      String key = _findKey(data[i]);
+      if (key.isNotEmpty && i + 1 < data.length) {
+        extractedData[key] = data[i + 1];
+      }
+    }
+
+    await textRecognizer.close();
+
+    if (!context.mounted) return;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Datos extraidos'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: extractedData.entries
+                  .map(
+                    (e) =>
+                        ListTile(title: Text(e.key), subtitle: Text(e.value)),
+                  )
+                  .toList(),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 
