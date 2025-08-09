@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  homeController.scanDni();
+                  homeController.scanDni(context);
                 },
                 child: Text("Iniciar Escaneo"),
               ),
